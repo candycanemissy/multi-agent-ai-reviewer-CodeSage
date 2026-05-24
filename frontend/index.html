@@ -1,16 +1,35 @@
-<h1>AI Multi-Agent Code Reviewer</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Code Intelligence</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
-<textarea id="code" rows="10" cols="50"></textarea>
-<br>
-<button onclick="run()">Analyze</button>
+<body>
 
-<h3>Reviewer</h3>
-<pre id="review"></pre>
+<div class="container">
 
-<h3>Fixed Code</h3>
-<pre id="fix"></pre>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>🤖 AI Agent</h2>
+        <button>New Chat</button>
+        <div class="history">History (demo)</div>
+    </div>
 
-<h3>Explanation</h3>
-<pre id="explain"></pre>
+    <!-- MAIN CHAT AREA -->
+    <div class="main">
+
+        <div class="chat-box" id="chat"></div>
+
+        <textarea id="code" placeholder="Paste your code here..."></textarea>
+
+        <button onclick="analyze()">Send</button>
+
+    </div>
+
+</div>
 
 <script src="app.js"></script>
+
+</body>
+</html>
