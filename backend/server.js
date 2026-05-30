@@ -1,6 +1,3 @@
-app.get("/", (req, res) => {
-    res.send("Backend is working");
-});
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
@@ -12,17 +9,28 @@ const {
 } = require("./agents");
 
 const app = express();
+
+// Middleware
 app.use(cors());
 app.use(express.json());
 
+// Health check route (for browser test)
 app.get("/", (req, res) => {
-    res.send("Backend is working");
+    res.send("Backend is working 🚀");
 });
+
+// Main AI route
 app.post("/analyze", async (req, res) => {
     const { code } = req.body;
 
+    if (!code) {
+        return res.status(400).json({
+            error: "Code is required"
+        });
+    }
+
     try {
-        // 🔥 Run agents in parallel
+        // Run agents in parallel
         const [review, fix, explain] = await Promise.all([
             reviewerAgent(code),
             fixerAgent(code),
@@ -36,9 +44,16 @@ app.post("/analyze", async (req, res) => {
         });
 
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error("Error in /analyze:", err);
+        res.status(500).json({
+            error: err.message || "Internal Server Error"
+        });
     }
 });
 
+// Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log("Server running"));
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
