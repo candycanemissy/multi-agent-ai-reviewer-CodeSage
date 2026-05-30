@@ -4,7 +4,8 @@ const API_KEY = process.env.GEMINI_API_KEY;
 
 // ✅ Correct Gemini endpoint
 const GEMINI_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+  "const GEMINI_URL =
+  "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent";
 
 // 🔥 Core function to call Gemini
 async function callGemini(prompt) {
