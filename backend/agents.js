@@ -1,58 +1,46 @@
 const axios = require("axios");
 
-const GEMINI_URL =
-"https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent";
-
 const API_KEY = process.env.GEMINI_API_KEY;
 
-// 🔍 Reviewer Agent
+const GEMINI_URL =
+  `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+
+async function callGemini(prompt) {
+    try {
+        const response = await axios.post(GEMINI_URL, {
+            contents: [
+                {
+                    parts: [{ text: prompt }]
+                }
+            ]
+        });
+
+        return response.data.candidates[0].content.parts[0].text;
+    } catch (err) {
+        console.error("Gemini error:", err.response?.data || err.message);
+        return "Error calling Gemini API";
+    }
+}
+
+// 🧠 Reviewer Agent
 async function reviewerAgent(code) {
-    const prompt = `
-You are a Senior Code Reviewer.
-Find bugs, bad practices, and issues.
-
-Code:
-${code}
-`;
-
-    return callGemini(prompt);
+    return await callGemini(
+        `Review this code and list bugs:\n\n${code}`
+    );
 }
 
 // 🛠 Fixer Agent
 async function fixerAgent(code) {
-    const prompt = `
-You are a Senior Developer.
-Fix and optimize this code.
-
-Code:
-${code}
-`;
-
-    return callGemini(prompt);
+    return await callGemini(
+        `Fix this code and return corrected version:\n\n${code}`
+    );
 }
 
 // 📖 Explainer Agent
 async function explainerAgent(code) {
-    const prompt = `
-Explain this code in simple terms for beginners.
-
-Code:
-${code}
-`;
-
-    return callGemini(prompt);
-}
-
-// 🔥 Gemini Call
-async function callGemini(prompt) {
-    const response = await axios.post(
-        `${GEMINI_URL}?key=${API_KEY}`,
-        {
-            contents: [{ parts: [{ text: prompt }] }]
-        }
+    return await callGemini(
+        `Explain this code in simple terms:\n\n${code}`
     );
-
-    return response.data.candidates[0].content.parts[0].text;
 }
 
 module.exports = {
