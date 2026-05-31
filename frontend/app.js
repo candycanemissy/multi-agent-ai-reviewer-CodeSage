@@ -15,19 +15,27 @@ async function analyze() {
     addMessage(code, "user");
 
     addMessage("AI is analyzing code...", "ai");
-    const API_URL = "https://multi-agent-ai-reviewer-codesage.onrender.com";
+ try {
+    const API_URL =
+      "https://multi-agent-ai-reviewer-codesage.onrender.com/analyze";
+
     const res = await fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ code })
-});
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ code })
+    });
 
     const data = await res.json();
 
-    // remove loading message (simple hack)
     chat.lastChild.remove();
 
     addMessage("🔍 REVIEW:\n" + data.review, "ai");
     addMessage("🛠 FIXED CODE:\n" + data.fixed_code, "ai");
     addMessage("📖 EXPLANATION:\n" + data.explanation, "ai");
-}
+
+} catch (err) {
+    chat.lastChild.remove();
+    addMessage("❌ Error: " + err.message, "ai");
+}}
