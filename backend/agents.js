@@ -25,3 +25,46 @@ async function callGemini(prompt) {
     return "Error: AI service failed";
   }
 }
+
+async function reviewerAgent(code) {
+  return await callGemini(`
+You are a senior software engineer.
+
+Review the following code and identify:
+- Bugs
+- Performance issues
+- Security issues
+- Best practice violations
+
+Code:
+${code}
+`);
+}
+
+async function fixerAgent(code) {
+  return await callGemini(`
+You are a senior software engineer.
+
+Fix the following code and return only the corrected version.
+
+Code:
+${code}
+`);
+}
+
+async function explainerAgent(code) {
+  return await callGemini(`
+You are a programming mentor.
+
+Explain the following code in simple terms.
+
+Code:
+${code}
+`);
+}
+
+module.exports = {
+  reviewerAgent,
+  fixerAgent,
+  explainerAgent
+};
