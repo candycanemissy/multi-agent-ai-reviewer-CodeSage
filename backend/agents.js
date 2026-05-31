@@ -3,7 +3,7 @@ const axios = require("axios");
 const API_KEY = process.env.GEMINI_API_KEY;
 
 const GEMINI_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent";
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
 
 async function callGemini(prompt) {
   try {
@@ -21,9 +21,12 @@ async function callGemini(prompt) {
     return response.data.candidates[0].content.parts[0].text;
 
   } catch (err) {
-    console.log("❌ Gemini API Error:", err.response?.data || err.message);
-    return "Error: AI service failed";
-  }
+  console.log("FULL GEMINI ERROR:");
+  console.log(JSON.stringify(err.response?.data, null, 2));
+  console.log(err.message);
+
+  return "Error: AI service failed";
+}
 }
 
 async function reviewerAgent(code) {
