@@ -1,3 +1,5 @@
+alert("NEW APP JS LOADED");
+
 const chat = document.getElementById("chat");
 
 function addMessage(text, className) {
