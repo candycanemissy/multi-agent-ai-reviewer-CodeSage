@@ -31,8 +31,10 @@ async function analyze() {
 
         console.log("Status:", res.status);
 
-        const data = await res.json();
+const data = await res.json();
 
+addMessage("STATUS: " + res.status, "ai");
+addMessage(JSON.stringify(data), "ai");
         console.log("Response:", data);
 
         if (!res.ok) {
@@ -47,10 +49,10 @@ async function analyze() {
 
     } catch (err) {
 
-        console.error("Frontend Error:", err);
+    chat.lastChild.remove();
 
-        chat.lastChild.remove();
+    addMessage("❌ ERROR DETAILS:", "ai");
 
-        addMessage("❌ Error: " + err.message, "ai");
-    }
+    addMessage(err.message, "ai");
+}
 }
